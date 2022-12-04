@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer";
 import { IsEmail, Length } from "class-validator"
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, OneToMany, BeforeInsert } from "typeorm"
+import bcrypt from "bcryptjs"
 
 /*
     id: pk integer
@@ -27,7 +28,7 @@ export default class User extends BaseEntity {
     email: string;
 
     @Index()
-    @Length(3, 32 {message:'사용자 이름은 3자 이상이어야 합니다.'})
+    @Length(3, 32, {message:'사용자 이름은 3자 이상이어야 합니다.'})
     @Column({unique: true})
     username: string;
     
