@@ -38,7 +38,8 @@ export default class User extends BaseEntity {
     password: string;
 
     // OneToMany -> 1:n  
-    // Post가 해당 타입이 된다.
+    // Post가 해당 타입이 된다. 
+    // post.user -> inverseSide이다.
     @OneToMany(()=>Post, (post)=>post.user)
     posts: Post[]
 
