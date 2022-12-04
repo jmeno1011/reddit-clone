@@ -37,6 +37,8 @@ export default class User extends BaseEntity {
     @Length(6, 255, {message: "비밀번호는 6자리 이상이어야 합니다."})
     password: string;
 
+    // OneToMany -> 1:n  
+    // Post가 해당 타입이 된다.
     @OneToMany(()=>Post, (post)=>post.user)
     posts: Post[]
 
