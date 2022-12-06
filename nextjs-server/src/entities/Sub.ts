@@ -36,6 +36,7 @@ export default class Sub extends BaseEntity {
     @OneToMany(() => Post, (post) => post.sub)
     posts: Post[]
 
+    // Expose를 통해서 데이터의 형 변환을 해준다.
     @Expose()
     get imageUrl(): string {
         return this.imageUrn
