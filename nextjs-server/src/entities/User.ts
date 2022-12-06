@@ -1,10 +1,13 @@
 import { Exclude } from "class-transformer";
 import { IsEmail, Length } from "class-validator"
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Index, OneToMany, BeforeInsert } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, Index, OneToMany, BeforeInsert } from "typeorm"
 import bcrypt from "bcryptjs"
+import BaseEntity from './Entity'
+import Post from "./Post";
+import Vote from "./Vote";
 
 /*
-    id: pk integer
+    id: pk integer 
     createdAt timestamp
     updatedAt timestamp
     email varChar
