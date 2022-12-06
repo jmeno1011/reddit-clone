@@ -14,3 +14,9 @@ npx tsc --init 커멘드로 tsconfig.json파일을 생성한다.
 
 base 엔티티 생성 
 - 주로 공통적으로 사용되는 칼럼이 해당되는 엔티티를 위해 따로 생성해서 다른 엔티티에 상속받아 사용한다.
+
+uri / urn
+전체 주소 : http://google.com/author/amty.html#post
+uri : http://google.com/author/amty.html
+urn : google.com/author/amty.html#post
+이러한 형식이 있어서 urn을 나눠놓는다
