@@ -1,9 +1,12 @@
 import BaseEntity from "./Entity";
-import { Index, Column, ManyToOne, JoinColumn, OneToMany, BeforeInsert } from "typeorm";
+import { Index, Column, ManyToOne, JoinColumn, OneToMany, BeforeInsert, Entity } from "typeorm";
 import User from "./User";
 import Sub from "./Sub";
 import { Exclude, Expose } from "class-transformer";
 import { makeId, slugify } from "../utils/helpers";
+import Vote from "./Vote";
+
+@Entity("post")
 export default class Post extends BaseEntity {
     @Index()
     @Column()
