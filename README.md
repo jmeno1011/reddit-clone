@@ -6,3 +6,7 @@ typeorm[https://typeorm.io/]
 
 reflect-metadata --> ??
 typeorm --> ??
+
+client 실행: nextjs-app위치로 가서 npm run dev
+server 실행: nextjs-server위치로 가서 npm run dev
+dokcer 실행: 최상단에서 docker-compose up
