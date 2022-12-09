@@ -13,7 +13,7 @@ const Register = () => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-
+        
         try {
             const res = await axios.post('/auth/register', {
                 email,
