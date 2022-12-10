@@ -56,34 +56,38 @@ const login = async (req: Request, res: Response) => {
         let errors: any = {};
 
         // 비워져있다면 에러를 프론트엔드로 보내주기
-        if(isEmpty(username)) errors.username = "사용자 이름은 비워둘 수 없습니다."
-        if(isEmpty(password)) errors.password = "비밀번호는 비워둘 수 없습니다."
-        if(Object.keys(errors).length>0){
+        if (isEmpty(username)) errors.username = "사용자 이름은 비워둘 수 없습니다."
+        if (isEmpty(password)) errors.password = "비밀번호는 비워둘 수 없습니다."
+        if (Object.keys(errors).length > 0) {
             return res.status(400).json(errors)
         }
 
         // 디비에서 유저 찾기
-        const user = await User.findOneBy({username});
+        const user = await User.findOneBy({ username });
 
         // 유저가 없다면 에러 보내주기
-        if(!user) return res.status(404).json({username:"사용자 이름이 등록되지 않았습니다."});
+        if (!user) return res.status(404).json({ username: "사용자 이름이 등록되지 않았습니다." });
 
         // 유저가 있다면 비밀번호 비교하기
         const passwordMatches = await bcrypt.compare(password, user.password);
 
         // 비밀번호가 다르다면 에러 보내기
-        if(!passwordMatches){
-            return res.status(401).json({password: "비밀번호가 잘못되었습니다."})
+        if (!passwordMatches) {
+            return res.status(401).json({ password: "비밀번호가 잘못되었습니다." })
         }
 
         // 비밀번호가 맞다면 토근 생성
-        const token = jwt.sign({username}, process.env.JWT_SECRET);
+        const token = jwt.sign({ username }, process.env.JWT_SECRET);
 
         // 쿠키 저장]
         //
-        res.set("Set-Cookie", cookie.serialize("token", token));
+        res.set("Set-Cookie", cookie.serialize("token", token, {
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/"
+        }));
 
-        return res.json({user, token});
+        return res.json({ user, token });
     } catch (error) {
         console.error(error);
         return res.status(500).json(error)
