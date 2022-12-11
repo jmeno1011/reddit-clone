@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useReducer } from 'react'
 import { User } from '../types';
 
 interface State {
@@ -15,7 +15,41 @@ const StateContext = createContext<State>({
 
 const DispatchContext = createContext<any>(null);
 
+interface Action {
+    type: string;
+    payload: any;
+}
+
+const reducer = (state: State, { type, payload }: Action) => {
+    switch (type) {
+        case "LOGIN":
+            return {
+                ...state,
+                authenticated: true,
+                user: payload,
+            };
+        case "LOGOUT":
+            return {
+                ...state,
+                authenticated: false,
+                user: null,
+            }
+        case "STOP_LOADING":
+            return {
+                ...state,
+                loading: false
+            }
+        default:
+            throw new Error("Unknow action type: " + type);
+    }
+}
+
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const [state, defatulDispatch] = useReducer(reducer, {
+        user: null,
+        authenticated: false,
+        loading: true
+    })
     return (
         <DispatchContext.Provider value={dispatch}>
             <StateContext.Provider value={state}>{children}</StateContext.Provider>
