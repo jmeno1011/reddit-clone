@@ -3,16 +3,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FormEvent, useState } from 'react'
 import InputGroup from '../components/InputGroup'
-import { useAuthDispatch } from '../context/auth'
+import { useAuthDispatch, useAuthState } from '../context/auth'
 
 const login = () => {
     let router = useRouter();
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<any>({});
-
+    const { authenticated } = useAuthState();
     const dispatch = useAuthDispatch();
+
+    if (authenticated) router.push("/");
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
@@ -32,7 +33,7 @@ const login = () => {
         <div className='bg-white'>
             <div className='flex flex-col items-center justify-center h-screen p-6'>
                 <div className='w-10/12 mx-auto md:w-96'>
-                    <h1 className='mb-2 text-lg font-medium'>회원가입</h1>
+                    <h1 className='mb-2 text-lg font-medium'>로그인</h1>
                     <form onSubmit={handleSubmit}>
                         <InputGroup
                             placeholder='Username'
