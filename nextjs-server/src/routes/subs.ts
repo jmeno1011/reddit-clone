@@ -3,23 +3,26 @@ import jwt from "jsonwebtoken"
 import User from "../entities/User";
 import userMiddleware from "../middlewares/user";
 import authMiddleware from "../middlewares/auth";
+import { isEmpty } from "class-validator";
+import { getRepository } from "typeorm";
+import Sub from "../entities/Sub";
 
 const router = Router()
 
 const createSub = async (req: Request, res: Response, next) => {
     const { name, title, description } = req.body;
-    // 먼저 sub을 생성할 수 있는 유저인지 체크를 위해 유저 정보 가져오기(요청에서 보내주는 토큰을 이용)
-    const token = req.cookies.token;
-    if (!token) return next();
 
-    const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
+    try{
+        let errors: any = {}
+        if(isEmpty(name)) errors.name = "이름은 비워둘 수 없습니다."
+        if(isEmpty(title)) errors.title = "제목은 비워둘 수 없습니다."
 
-    const user = await User.findOneBy({ username })
+        const sub = await getRepository(Sub)
+        .createQueryBuilder()
+        
+    }catch(error){
 
-    // 유저 정보가 없다면 throw error!
-    if (!user) throw new Error("Unauthenticated")
-
-
+    }
     // 유저 정보가 있다면 sub 이름과 제목이 이미 있는 것인지 체크
 
     // Sub Instance 생성 후 데이터베이스에 저장
