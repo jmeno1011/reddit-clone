@@ -7,14 +7,10 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         // 먼저 sub을 생성할 수 있는 유저인지 체크를 위해 유저 정보 가져오기(요청에서 보내주는 토큰을 이용)
         const token = req.cookies.token;
         if (!token) return next()
-        console.log(token);
-        
 
         const { username }: any = jwt.verify(token, process.env.JWT_SECRET)
 
         const user = await User.findOneBy({ username })
-
-        console.log("user", user);
         
         // 유저 정보가 없다면 throw error!
         if (!user) throw new Error("Unauthenticated")

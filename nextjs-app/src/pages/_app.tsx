@@ -11,14 +11,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
   const authRoutes = ["/register", "/login"];
   const authRoute = authRoutes.includes(pathname);
-  return <AuthProvider>
-    {
-      !authRoute && <Navbar />
-    }
-    <div className={authRoute ? "" : "pt-12"}>
-      <Component {...pageProps} />
-    </div>
-  </AuthProvider>
+  return (
+    <AuthProvider>
+      {
+        !authRoute && <Navbar />
+      }
+      <div className={authRoute ? "" : "pt-12"}>
+        <Component {...pageProps} />
+      </div>
+    </AuthProvider>
+  )
 }
 
 export default MyApp

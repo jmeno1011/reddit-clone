@@ -111,10 +111,10 @@ const logout = async (_: Request, res: Response) => {
             path: "/"
         })
     )
+    res.status(200).json({ success: true });
 }
 
 const router = Router();
-
 router.get("/me", userMiddleware, authMiddleware, me);
 router.post("/register", register);
 router.post("/login", login);
