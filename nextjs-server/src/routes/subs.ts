@@ -30,7 +30,7 @@ const createSub = async (req: Request, res: Response, next) => {
         if (isEmpty(name)) errors.name = "이름은 비워둘 수 없습니다."
         if (isEmpty(title)) errors.title = "제목은 비워둘 수 없습니다."
 
-        const sub = await getRepository(Sub)
+        const sub = await AppDataSource.getRepository(Sub)
             .createQueryBuilder("sub")
             .where("lower(sub.name) = :name", { name: name.toLowerCase() })
             .getOne();
@@ -86,7 +86,7 @@ const topSubs = async (req: Request, res: Response) => {
     }
 }
 
-router.get("/:name", userMiddleware, authMiddleware, getSub)
+router.get("/:name", userMiddleware, getSub)
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/sub/topSubs", topSubs);
 
