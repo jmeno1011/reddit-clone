@@ -21,7 +21,12 @@ const SubPage = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const router = useRouter()
     const subName = router.query.sub;
+    console.log(subName);
+    
     const { data: sub, error } = useSWR(subName ? `/subs/${subName}` : null, fetcher)
+
+    console.log(sub);
+    
 
     useEffect(() => {
         if (!sub || !user) return;
