@@ -1,24 +1,22 @@
 import { Request, Response, Router } from "express";
-import jwt from "jsonwebtoken"
 import User from "../entities/User";
 import userMiddleware from "../middlewares/user";
 import authMiddleware from "../middlewares/auth";
 import { isEmpty } from "class-validator";
-import { getRepository } from "typeorm";
 import Sub from "../entities/Sub";
 import { AppDataSource } from "../data-source";
 import Post from "../entities/Post";
 
 const router = Router()
 
-const getSub =async (req:Request, res:Response) => {
+const getSub = async (req: Request, res: Response) => {
     const name = req.params.name;
-    try{
-        const sub = await Sub.findOneByOrFail({name})
+    try {
+        const sub = await Sub.findOneByOrFail({ name })
 
         return res.json(sub);
-    }catch(error){
-        return res.status(404).json({error:"커뮤니티를 찾을 수 없습니다."})
+    } catch (error) {
+        return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." })
     }
 }
 
