@@ -6,6 +6,9 @@ import { isEmpty } from "class-validator";
 import Sub from "../entities/Sub";
 import { AppDataSource } from "../data-source";
 import Post from "../entities/Post";
+import multer, { FileFilterCallback } from "multer";
+import { makeId } from "../utils/helpers";
+import path from "path";
 
 const router = Router()
 
@@ -99,6 +102,23 @@ const onwSub = async (req:Request, res:Response, next:NextFunction)=>{
         
     }
 }
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination:"public/image",
+        filename:(_, file, callback)=>{
+            const name = makeId(10);
+            callback(null, name+ path.extname(file.originalname))
+        },
+    }),
+    fileFilter:(_, file: any, callback: FileFilterCallback)=>{
+        if(file.mimetype === "image/jpeg" || file.mimetype === "image/png"){
+            callback(null, true );
+        }else{
+            callback(new Error("이미지가 아닙니다."))
+        }
+    }   
+})
 
 router.get("/:name", userMiddleware, getSub)
 router.post("/", userMiddleware, authMiddleware, createSub);
