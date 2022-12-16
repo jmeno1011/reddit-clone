@@ -89,7 +89,7 @@ const login = async (req: Request, res: Response) => {
         //
         res.set("Set-Cookie", cookie.serialize("token", token, {
             httpOnly: true,
-            maxAge: 60 * 60 * 24 * 7,
+            maxAge: 60 * 60 * 24 * 7, // 7day
             path: "/"
         }));
 

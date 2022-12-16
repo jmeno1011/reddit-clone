@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import User from "../entities/User";
 import userMiddleware from "../middlewares/user";
 import authMiddleware from "../middlewares/auth";
@@ -13,7 +13,6 @@ const getSub = async (req: Request, res: Response) => {
     const name = req.params.name;
     try {
         const sub = await Sub.findOneByOrFail({ name })
-
         return res.json(sub);
     } catch (error) {
         return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." })
@@ -84,8 +83,26 @@ const topSubs = async (req: Request, res: Response) => {
     }
 }
 
+const onwSub = async (req:Request, res:Response, next:NextFunction)=>{
+    const user:User = res.locals.user;
+    try {
+        const sub = await Sub.findOneOrFail({where:{name:req.params.name}});
+
+        if(sub.username !== user.username){
+            return res.status(403).json({error:"이 커뮤니티를 소유하고 있지 않습니다."});
+        }
+        res.locals.sub = sub;
+        next();
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error:"문제가 발생했습니다."})
+        
+    }
+}
+
 router.get("/:name", userMiddleware, getSub)
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/sub/topSubs", topSubs);
+router.post("/:name/upload", userMiddleware, authMiddleware,  ownSub, upload.single("file"), uploadSubImage)
 
 export default router;
