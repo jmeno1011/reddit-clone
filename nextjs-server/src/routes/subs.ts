@@ -17,6 +17,8 @@ const getSub = async (req: Request, res: Response) => {
     const name = req.params.name;
     try {
         const sub = await Sub.findOneByOrFail({ name })
+        console.log(sub);
+        
         return res.json(sub);
     } catch (error) {
         return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." })
