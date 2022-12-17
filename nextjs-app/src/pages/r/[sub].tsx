@@ -14,11 +14,8 @@ const SubPage = () => {
 
     const fetcher = async (url: string) => {
         try {
-            const res = await axios.get(url).then(res=>{
-                console.log(res.data)
-            });
-            // console.log(res);
-            // return res.data;
+            const res = await axios.get(url)
+            return res.data;
         } catch (error: any) {
             throw error.response.data
         }

@@ -15,8 +15,6 @@ const mapError = (errors: Object[]) => {
 }
 
 const me = async (_: Request, res: Response) => {
-    console.log(res.locals.user);
-    
     return res.json(res.locals.user);
 }
 
@@ -88,8 +86,7 @@ const login = async (req: Request, res: Response) => {
         // 비밀번호가 맞다면 토근 생성
         const token = jwt.sign({ username }, process.env.JWT_SECRET);
 
-        // 쿠키 저장]
-        //
+        // 쿠키 저장
         res.set("Set-Cookie",
          cookie.serialize("token", token, {
             httpOnly: true,

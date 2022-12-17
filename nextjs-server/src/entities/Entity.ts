@@ -15,6 +15,6 @@ export default abstract class Entity extends BaseEntity{
     // class transformer 이용
     toJSON(){
         // Converts class (constructor) object to plain (literal) object. Also works with arrays.
-        return instanceToPlain(false)
+        return instanceToPlain(this)
     }
 }
