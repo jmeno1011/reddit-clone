@@ -17,7 +17,7 @@ import Vote from "./Vote";
 // @Entity() => 데코레이터 클래스는 User 클래스가 엔티티임을 나타내는데 사용된다.
 // Create Table user 부분이다.
 @Entity("users")
-export default class User extends BaseEntity {
+export class User extends BaseEntity {
   // Index() : 데이터베이스 인덱스를 생성합니다. 엔티티 속성 또는 엔티티에 사용할 수 있다.
   // 엔티티ㅣ에 사용될 복합 열로 인덱스를 생성할 수 있다.
   // 데이터 베이스 인덱스를 생성하는 이유는 -> 인텍스를 이용하면 데이터를 좀 더 빠르게 조회가 되기때문에 사용한다.

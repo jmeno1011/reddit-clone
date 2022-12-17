@@ -9,7 +9,7 @@ import {
   Entity,
 } from "typeorm";
 import { Exclude, Expose } from "class-transformer";
-import User from "./User";
+import {User} from "./User";
 import Sub from "./Sub";
 import Vote from "./Vote";
 import Comment from "./Comment";

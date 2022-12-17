@@ -1,6 +1,6 @@
 import { isEmpty, validate } from "class-validator";
 import { Request, Response, Router } from "express";
-import User from "../entities/User";
+import {User} from "../entities/User";
 import bcrypt from 'bcryptjs'
 import jwt from "jsonwebtoken"
 import cookie from "cookie"
@@ -15,6 +15,8 @@ const mapError = (errors: Object[]) => {
 }
 
 const me = async (_: Request, res: Response) => {
+    console.log(res.locals.user);
+    
     return res.json(res.locals.user);
 }
 
@@ -72,7 +74,8 @@ const login = async (req: Request, res: Response) => {
         const user = await User.findOneBy({ username });
 
         // 유저가 없다면 에러 보내주기
-        if (!user) return res.status(404).json({ username: "사용자 이름이 등록되지 않았습니다." });
+        if (!user) 
+        return res.status(404).json({ username: "사용자 이름이 등록되지 않았습니다." });
 
         // 유저가 있다면 비밀번호 비교하기
         const passwordMatches = await bcrypt.compare(password, user.password);
@@ -87,11 +90,13 @@ const login = async (req: Request, res: Response) => {
 
         // 쿠키 저장]
         //
-        res.set("Set-Cookie", cookie.serialize("token", token, {
+        res.set("Set-Cookie",
+         cookie.serialize("token", token, {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 7, // 7day
             path: "/"
-        }));
+         })
+        );
 
         return res.json({ user, token });
     } catch (error) {

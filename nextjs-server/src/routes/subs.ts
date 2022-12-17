@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import User from "../entities/User";
+import {User} from "../entities/User";
 import userMiddleware from "../middlewares/user";
 import authMiddleware from "../middlewares/auth";
 import { isEmpty } from "class-validator";
@@ -17,9 +17,7 @@ const getSub = async (req: Request, res: Response) => {
     const name = req.params.name;
     try {
         const sub = await Sub.findOneByOrFail({ name })
-        console.log(sub);
-        
-        return res.json(sub);
+        res.json(sub)
     } catch (error) {
         return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." })
     }
@@ -57,6 +55,8 @@ const createSub = async (req: Request, res: Response, next) => {
         sub.user = user;
 
         await sub.save()
+        console.log(sub);
+        
         return res.json(sub)
     } catch (error) {
         console.error(error);
@@ -71,7 +71,8 @@ const createSub = async (req: Request, res: Response, next) => {
 
 const topSubs = async (req: Request, res: Response) => {
     try {
-        const imageUrlExp = `COALESCE(s."imageUrn", 'https://www.gravatar.com/avatar?d=mp&f=y')`;
+        const imageUrlExp = `COALESCE('${process.env.APP_URL}/images/' || s."imageUrn", 
+        'https://www.gravatar.com/avatar?d=mp&f=y')`;
         const subs = await AppDataSource
             .createQueryBuilder()
             .select(`s.title, s.name, ${imageUrlExp} as "imageUrl", count(p.id) as "postCount"`)
@@ -167,7 +168,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
 }
 
 
-router.get("/:name", userMiddleware, getSub)
+router.get("/:name", userMiddleware, getSub);
 router.post("/", userMiddleware, authMiddleware, createSub);
 router.get("/sub/topSubs", topSubs);
 router.post("/:name/upload", userMiddleware, authMiddleware, ownSub, upload.single("file"), uploadSubImage)

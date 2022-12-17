@@ -15,10 +15,11 @@ export interface Sub {
     bannerUrn: string;
     username: string;
     posts: Post[];
-    postCount?: string
+    postCount?: string;
+  
     imageUrl: string;
     bannerUrl: string;
-}
+  }
 
 export interface Post {
     indentifier: string;
@@ -30,6 +31,7 @@ export interface Post {
     createdAt: string;
     updatedAt: string;
     sub?: Sub;
+
     url: string;
     userVote?: number;
     voteScore?: number;

@@ -1,25 +1,24 @@
-import axios from 'axios'
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import useSWR from "swr"
 import { useAuthState } from '../../context/auth';
+import axios from 'axios'
 
 const SubPage = () => {
-
+    const router = useRouter();
+    const subName = router.query.sub;
     const [onwSub, setOnwSub] = useState(false)
     const { authenticated, user } = useAuthState();
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const router = useRouter()
-    const subName = router.query.sub;
 
     const fetcher = async (url: string) => {
         try {
-            const res = await axios.get(url);
-            console.log(res);
-            
-            
-            return res.data;
+            const res = await axios.get(url).then(res=>{
+                console.log(res.data)
+            });
+            // console.log(res);
+            // return res.data;
         } catch (error: any) {
             throw error.response.data
         }
