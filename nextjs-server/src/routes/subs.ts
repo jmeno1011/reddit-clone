@@ -109,7 +109,7 @@ const ownSub = async (req: Request, res: Response, next: NextFunction) => {
 
 const upload = multer({
     storage: multer.diskStorage({
-        destination: "public/image",
+        destination: "public/images",
         filename: (_, file, callback) => {
             const name = makeId(10);
             callback(null, name + path.extname(file.originalname))
@@ -138,7 +138,9 @@ const uploadSubImage = async (req: Request, res: Response) => {
             unlinkSync(req.file.path);
             return res.status(400).json({ error: "잘못된 유형" })
         }
+
         let oldImageUrn: string = "";
+        
         if (type === "image") {
             //사용중인 Urn을 저장합니다. (이전 파일을 아래서 삭제하기 위해서 )
             oldImageUrn = sub.imageUrn || "";
