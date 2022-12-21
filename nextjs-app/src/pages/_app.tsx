@@ -4,6 +4,7 @@ import axios from 'axios'
 import { AuthProvider } from '../context/auth';
 import { useRouter } from 'next/router';
 import Navbar from '../components/Navbar';
+import { SWRConfig } from 'swr';
 
 function MyApp({ Component, pageProps }: AppProps) {
   axios.defaults.baseURL = process.env.NEXT_PUBLIC_SERVER_BASEURL + "/api";
@@ -11,15 +12,27 @@ function MyApp({ Component, pageProps }: AppProps) {
   const { pathname } = useRouter()
   const authRoutes = ["/register", "/login"];
   const authRoute = authRoutes.includes(pathname);
+
+  const fetcher = async (url: string) => {
+    try {
+      const res = await axios.get(url);
+      return res.data;
+    } catch (err: any) {
+      throw err.response.data;
+    }
+  }
+
   return (
-    <AuthProvider>
-      {
-        !authRoute && <Navbar />
-      }
-      <div className={authRoute ? "" : "pt-16"}>
-        <Component {...pageProps} />
-      </div>
-    </AuthProvider>
+    <SWRConfig value={{ fetcher }}>
+      <AuthProvider>
+        {
+          !authRoute && <Navbar />
+        }
+        <div className={authRoute ? "" : "pt-16"}>
+          <Component {...pageProps} />
+        </div>
+      </AuthProvider>
+    </SWRConfig>
   )
 }
 
