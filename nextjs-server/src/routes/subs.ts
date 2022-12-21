@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
-import {User} from "../entities/User";
+import { User } from "../entities/User";
 import userMiddleware from "../middlewares/user";
 import authMiddleware from "../middlewares/auth";
 import { isEmpty } from "class-validator";
@@ -17,6 +17,19 @@ const getSub = async (req: Request, res: Response) => {
     const name = req.params.name;
     try {
         const sub = await Sub.findOneByOrFail({ name })
+
+        // 포스트를 생성한 후에 해당 sub에 속하는 포스트 정보를 넣어주기
+        const posts = await Post.find({
+            where: { subName: sub.name },
+            order: { createdAt: "DESC" },
+            relations: ["comments", "votes"],
+        })
+        sub.posts = posts;
+
+        if (res.locals.user) {
+            sub.posts.forEach(p => p.setUserVote(res.locals.user));
+        }
+
         res.json(sub)
     } catch (error) {
         return res.status(404).json({ error: "커뮤니티를 찾을 수 없습니다." })
@@ -56,7 +69,7 @@ const createSub = async (req: Request, res: Response, next) => {
 
         await sub.save()
         console.log(sub);
-        
+
         return res.json(sub)
     } catch (error) {
         console.error(error);
@@ -140,7 +153,7 @@ const uploadSubImage = async (req: Request, res: Response) => {
         }
 
         let oldImageUrn: string = "";
-        
+
         if (type === "image") {
             //사용중인 Urn을 저장합니다. (이전 파일을 아래서 삭제하기 위해서 )
             oldImageUrn = sub.imageUrn || "";
