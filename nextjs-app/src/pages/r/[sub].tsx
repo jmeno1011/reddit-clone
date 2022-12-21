@@ -4,7 +4,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 import useSWR from "swr"
 import { useAuthState } from '../../context/auth';
 import axios from 'axios'
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/SideBar';
 
 const SubPage = () => {
     const router = useRouter();

@@ -6,9 +6,9 @@ import { Sub } from '../types';
 
 type Props = {
     sub: Sub
-}
+};
 
-const Sidebar = ({ sub }:Props) => {
+const Sidebar = ({ sub }: Props) => {
     const { authenticated } = useAuthState();
     return (
         <div className='hidden w-4/12 ml-3 md:block'>
@@ -43,4 +43,4 @@ const Sidebar = ({ sub }:Props) => {
     )
 }
 
-export default Sidebar
+export default Sidebar;
