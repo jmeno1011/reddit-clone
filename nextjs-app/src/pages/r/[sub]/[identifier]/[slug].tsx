@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { useAuthState } from "../../../../context/auth";
 import { FormEvent, useState } from "react";
 import classNames from "classnames";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 const PostPage = () => {
     const router = useRouter()
@@ -34,17 +35,17 @@ const PostPage = () => {
         }
     }
 
-    const vote =async (value: number,comment?: Comment) => {
-        if(!authenticated) router.push('/login')
+    const vote = async (value: number, comment?: Comment) => {
+        if (!authenticated) router.push('/login')
         //  이미 클릭 한 vote 버튼을 눌렀을 시에는 reset
-        if(
+        if (
             (!comment && value === post?.userVote) ||
             (comment && comment.userVote === value)
-        ){
+        ) {
             value = 0;
         }
         try {
-            await axios.post("/votes",{
+            await axios.post("/votes", {
                 identifier,
                 slug,
                 commentIdentifier: comment?.identifier,
@@ -70,22 +71,18 @@ const PostPage = () => {
                                     <div className="flex-shrink-0 w-10 py-2 text-center rounded-l">
                                         {/* 좋아요 부분 */}
                                         <div
-                                            className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                        onClick={() => vote(1)}
+                                            className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                            onClick={() => vote(1)}
                                         >
-                                            <i className={classNames('fas fa-arrow-up', {
-                                                "text-red-500": post.userVote === 1
-                                            })}></i>
+                                            {post.userVote === 1 ? <FaArrowUp className="text-red-500" /> : <FaArrowUp />}
                                         </div>
                                         <p className="text-xs font-bold">{post.voteScore}</p>
                                         {/* 싫어요 */}
                                         <div
-                                            className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
-                                        onClick={() => vote(-1)}
+                                            className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
+                                            onClick={() => vote(-1)}
                                         >
-                                            <i className={classNames('fas fa-arrow-down', {
-                                                "text-blue-500": post.userVote === -1
-                                            })}></i>
+                                            {post.userVote === -1 ? <FaArrowDown className="text-blue-500" /> : <FaArrowDown />}
                                         </div>
                                     </div>
 
@@ -164,22 +161,18 @@ const PostPage = () => {
                                             <div className="flex-shrink-0 w-10 py-2 text-center rounded-l">
                                                 {/* 좋아요 부분 */}
                                                 <div
-                                                    className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
-                                                onClick={() => vote(1, comment)}
+                                                    className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500"
+                                                    onClick={() => vote(1, comment)}
                                                 >
-                                                    <i className={classNames('fas fa-arrow-up', {
-                                                        "text-red-500": comment.userVote === 1
-                                                    })}></i>
+                                                    {comment.userVote === 1 ? <FaArrowUp className="text-red-500" /> : <FaArrowUp />}
                                                 </div>
                                                 <p className="text-xs font-bold">{comment.voteScore}</p>
                                                 {/* 싫어요 */}
                                                 <div
-                                                    className="w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
-                                                onClick={() => vote(-1, comment)}
+                                                    className="flex justify-center w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500"
+                                                    onClick={() => vote(-1, comment)}
                                                 >
-                                                    <i className={classNames('fas fa-arrow-down', {
-                                                        "text-blue-500": comment.userVote === -1
-                                                    })}></i>
+                                                    {comment.userVote === -1 ? <FaArrowDown className="text-blue-500" /> : <FaArrowDown />}
                                                 </div>
                                             </div>
 
