@@ -13,8 +13,9 @@ const PostPage = () => {
     const { identifier, sub, slug } = router.query
     const { authenticated, user } = useAuthState();
     const [newComment, setNewComment] = useState("");
-    const { data: post, error } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null)
-    const { data: comments, mutate } = useSWR<Comment[]>(identifier && slug ? `/posts/${identifier}/${slug}/comments` : null);
+    // redeclare
+    const { data: post, error, mutate: postMutate } = useSWR<Post>(identifier && slug ? `/posts/${identifier}/${slug}` : null)
+    const { data: comments, mutate: commentMutate } = useSWR<Comment[]>(identifier && slug ? `/posts/${identifier}/${slug}/comments` : null);
     console.log(comments);
 
     const submitComment = async (e: FormEvent) => {
@@ -26,7 +27,7 @@ const PostPage = () => {
             await axios.post(`/posts/${post?.identifier}/${post?.slug}/comments`, {
                 body: newComment
             });
-            mutate(); // 캐시 된 데이터를 갱신하기 위한 함수
+            commentMutate(); // 캐시 된 데이터를 갱신하기 위한 함수
             setNewComment("");
         } catch (error) {
             console.error(error);
@@ -49,6 +50,8 @@ const PostPage = () => {
                 commentIdentifier: comment?.identifier,
                 value
             })
+            postMutate();
+            commentMutate();
         } catch (error) {
             console.error(error);
         }
