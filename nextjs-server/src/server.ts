@@ -4,6 +4,7 @@ import { AppDataSource } from "./data-source";
 import authRoutes from "./routes/auth"
 import subRoutes from "./routes/subs"
 import postRoutes from "./routes/posts"
+import voteRoutes from "./routes/vote"
 import cors from "cors"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser";
@@ -24,6 +25,7 @@ app.get("/", (_, res) => res.send("running"));
 app.use("/api/auth", authRoutes)
 app.use("/api/subs", subRoutes)
 app.use("/api/posts", postRoutes)
+app.use("/api/vote", voteRoutes)
 
 app.use(express.static("public"));
 
