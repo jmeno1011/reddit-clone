@@ -20,7 +20,7 @@ const PostCreate = () => {
                 body,
                 sub: subName
             })
-            router.push(`/r/${subName}/${post.indentifier}/${post.slug}`)
+            router.push(`/r/${subName}/${post.identifier}/${post.slug}`)
         } catch (error) {
             console.log(error);
         }
