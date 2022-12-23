@@ -22,22 +22,22 @@ const SubPage = () => {
         setOnwSub(authenticated && user.username === sub.username)
     }, [sub])
 
-    const uploadImage = async (e:ChangeEvent<HTMLInputElement>) => {
-        if(e.target.files === null) return;
+    const uploadImage = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files === null) return;
 
         const file = e.target.files[0];
-        console.log('file',file);
-        
+        console.log('file', file);
+
         const formData = new FormData();
         formData.append("file", file)
         // !. -> 무조건 null이 아니다 단언!
         formData.append("type", fileInputRef.current!.name);
-        try{
-            await axios.post(`subs/${sub.name}/upload`, formData,{
-                headers: {"Context-Type":"multipart/form-data"}
+        try {
+            await axios.post(`subs/${sub.name}/upload`, formData, {
+                headers: { "Context-Type": "multipart/form-data" }
             })
 
-        }catch(error){
+        } catch (error) {
             console.error(error);
         }
     }
@@ -52,16 +52,16 @@ const SubPage = () => {
     }
 
     let renderPosts;
-    if(!sub) {
+    if (!sub) {
         renderPosts = <p className='text-lg text-center'>로딩중...</p>
-    }else if(sub.posts.length === 0){
+    } else if (sub.posts.length === 0) {
         renderPosts = <p className='text-lg text-center'>아직 작성된 포스트가 없습니다.</p>
-    }else{
-        renderPosts = sub.posts.map((post:Post)=>(
-            <PostCard key={post.identifier} post={post} subMutate={mutate}/>
+    } else {
+        renderPosts = sub.posts.map((post: Post) => (
+            <PostCard key={post.identifier} post={post} subMutate={mutate} />
         ))
     }
-    
+
     return (
         <>
             {sub &&
@@ -99,21 +99,21 @@ const SubPage = () => {
                                             onClick={() => onpenFileInput("image")} />
                                     )}
                                 </div>
-                            </div>
-                            <div className='pt-1 pl-24'>
-                                <div className='flex items-center'>
-                                    <h1 className='text-3xl font-bold'>{sub.title}</h1>
+                                <div className='pt-1 pl-24'>
+                                    <div className='flex items-center'>
+                                        <h1 className='text-3xl font-bold'>{sub.title}</h1>
+                                    </div>
+                                    <p className='text-sm font-bold text-gray-400'>
+                                        /r/{sub.name}
+                                    </p>
                                 </div>
-                                <p className='text-sm font-bold text-gray-400'>
-                                    /r/${sub.name}
-                                </p>
                             </div>
                         </div>
                     </div>
                     {/* 포스트와 사이드바 */}
                     <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
                         <div className='w-full md:mr-3 md:w-8/12'>{renderPosts}</div>
-                        <Sidebar sub={sub}/>
+                        <Sidebar sub={sub} />
                     </div>
                 </>
             }
