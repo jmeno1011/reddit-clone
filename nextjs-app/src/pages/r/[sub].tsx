@@ -15,7 +15,7 @@ const SubPage = () => {
     const { authenticated, user } = useAuthState();
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const { data: sub, error } = useSWR(subName ? `/subs/${subName}` : null)
+    const { data: sub, error, mutate } = useSWR(subName ? `/subs/${subName}` : null)
 
     useEffect(() => {
         if (!sub || !user) return;
@@ -58,7 +58,7 @@ const SubPage = () => {
         renderPosts = <p className='text-lg text-center'>아직 작성된 포스트가 없습니다.</p>
     }else{
         renderPosts = sub.posts.map((post:Post)=>(
-            <PostCard key={post.identifier} post={post}/>
+            <PostCard key={post.identifier} post={post} subMutate={mutate}/>
         ))
     }
     
