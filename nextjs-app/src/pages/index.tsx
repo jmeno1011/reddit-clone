@@ -4,15 +4,23 @@ import Image from 'next/image'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import useSWR from "swr"
-import { Sub } from '../types'
+import { Post, Sub } from '../types'
 import axios from 'axios'
 import { useAuthState } from '../context/auth'
+import useSWRInfinite from 'swr/infinite'
 
 const Home: NextPage = () => {
   const { authenticated } = useAuthState();
   const address = 'http://localhost:4000/api/subs/sub/topSubs'
   const { data: topSubs } = useSWR<Sub[]>(address);
-  
+
+  const getKey = (pageIndex: number, previousPageData: Post[]) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return `/posts?page=${pageIndex}`;
+  }
+
+  const { data, error, size: page, setSize: setPage, isValidating, mutate } = useSWRInfinite<Post[]>(getKey)
+
   return (
     <div className='flex max-w-5xl px-4 pt-5 mx-auto'>
       {/* 포스트 리스트 */}
