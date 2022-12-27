@@ -42,7 +42,7 @@ const PostCreate = () => {
                                 onChange={(e) => setTitle(e.target.value)}
                             />
                             <div className='absolute mb-2 text-sm text-gray-400 select-none' style={{ top: 10, right: 10 }}>
-                                / 20
+                                {title.trim().length} / 20
                             </div>
                         </div>
                         <textarea
